@@ -1196,12 +1196,22 @@ public class NewChunk extends Chunk {
       if (fitLong)  // once set to false don't want to reset back to true
         fitLong = ll.compareTo(MAX)<=0 && ll.compareTo(MIN)>=0;
 
-      if (x >=0 && fitLong) { // use long if integer and fit inside long format
+      if ((x >=0) && ((long)d != ll.longValue()) && fitLong)  { // use long if integer and fit inside long format
         if( ll.compareTo(min_l)==-1 ) { min=d; min_l=ll; llo=l; xlo=x; } //
         if( ll.compareTo(max_l)== 1 ) { max=d; max_l=ll; lhi=l; xhi=x; }
       } else {
-        if( d < min ) { min = d; min_l=ll; llo=l; xlo=x; }
-        if( d > max ) { max = d; max_l=ll; lhi=l; xhi=x; }
+        if( d < min ) {
+          min = d;
+          if( ll.compareTo(min_l)==-1 )
+            min_l=ll;
+          llo=l; xlo=x;
+        }
+        if( d > max ) {
+          max = d;
+          if( ll.compareTo(max_l)== 1 )
+            max_l=ll;
+          lhi=l; xhi=x;
+        }
       }
 
       floatOverflow = l < Integer.MIN_VALUE+1 || l > Integer.MAX_VALUE;
